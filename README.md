@@ -21,3 +21,6 @@ Done:
 Sudo code
 
 Assignment class (?)
+
+.gitignore updated to allow only .c .h .cpp and .hpp
+
