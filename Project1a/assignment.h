@@ -3,12 +3,12 @@
 
 #include "Date.h"
 
+enum assignStatus { assigned, completed, late };
+
 class assignment
 {
 public:
 	assignment();
-
-	enum assignStatus {assigned, completed, late};
 
 	assignment(Date newDue, Date newAssign, string newDisc, assignStatus newStatus) :dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
 

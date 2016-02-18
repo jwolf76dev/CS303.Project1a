@@ -12,6 +12,9 @@ void main() {
 	int a = 2015, b = 03, c = 23;
 	Date whoCares(a, b, c); //sets date to 03/23/2015
 
+	while (whoCares.check_valid() != 1) {
+
+	}
 	
 	assignment temp1(tempDueDate, tempAssignDate, "things", temp);
 	

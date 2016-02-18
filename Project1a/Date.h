@@ -118,9 +118,11 @@ public:
 	}
 
 	//checks if this date is valid
-	void check_valid(){
-		if (!valid_date(year, month, day))
-			throw std::exception("The date is invalid");
+	bool check_valid() {
+		if (!valid_date(year, month, day)) 
+			return 0;
+		cout << "This date is invaild" << endl;
+		return 1;
 	}
 
 	//checks if a date is valid
