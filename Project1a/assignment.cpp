@@ -43,7 +43,7 @@ string assignment::getDescription()
 	return description;
 }
 
-assignment::assignStatus assignment::getStatus()
+assignStatus assignment::getStatus()
 {
 	return status;
 }

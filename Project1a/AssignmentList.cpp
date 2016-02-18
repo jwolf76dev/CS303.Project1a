@@ -135,4 +135,5 @@ bool AssignmentList::checkformat(Date checkDate)
 	// Compare the string and check if the date is right
 	// Use the delimiters to check for proper format
 	// Check for uniqueness in both lists. 
+	return 0;
 }
