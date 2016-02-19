@@ -293,6 +293,12 @@ public:
 	bool operator >=(const Date other) const{
 		return this->operator>(other) || this->operator==(other);
 	}
+	
+	//this function reads out to the user
+	friend ostream& operator << (ostream& out, Date& d) {
+		out << d.getMonth() << "-" << d.getDay() << "-" << d.getYear();
+		return out;
+	}
 
 	int getYear() { return year; }
 	int getMonth() { return month; }

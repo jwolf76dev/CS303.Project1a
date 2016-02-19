@@ -13,7 +13,26 @@ void main() {
 	Ordered_List<assignment> assigned;
 
 	load_data(completed, assigned);
-	
+
+
+	//Iterators for the lists
+	Ordered_List<assignment>::iter iterA = assigned.begin();
+	Ordered_List<assignment>::iter iterC = completed.begin();
+
+	//Read out the lists
+
+	cout << "Assigned List" << endl;
+	while (iterA != assigned.end()) {
+		cout << iterA->getDueDate()<< ", " << iterA->getDescription() << ", "<< iterA->getAssignDate() << ", " << iterA->getStatus()<< endl;
+		++iterA;
+	}
+
+	cout << "completed/late List" << endl;
+	while (iterC != completed.end()) {
+		cout << iterC->getDueDate() << ", " << iterC->getDescription() << ", " << iterC->getAssignDate() << ", " << iterC->getStatus() << endl;
+		++iterC;
+	}
+	system("pause");
 	
 	/*
 	/*string date = "5-1-2014";
@@ -71,12 +90,8 @@ string trim(const string& the_string)
 	return the_string.substr(p, q - p + 1);
 }
 
-void load_data(Ordered_List<assignment>&, Ordered_List<assignment>&) {
-	string line;
-	string dueDate;
-	string desc;
-	string assignDate;
-	string status;
+void load_data(Ordered_List<assignment>& assignedList, Ordered_List<assignment>& completedList) {
+	string line, dueDate, desc, assignDate, status;
 	ifstream in("assignments.txt");
 	if (in) { // Stream exists.
 		while (getline(in, line)) { //read the next line
@@ -85,17 +100,31 @@ void load_data(Ordered_List<assignment>&, Ordered_List<assignment>&) {
 			desc = trim(st.next_token());
 			assignDate = trim(st.next_token());
 			status = trim(st.next_token());
-			
-			std::cout << dueDate << " " << desc << " " << assignDate << " " << status << endl;
+			Date newDue(dueDate);
+			Date newAssign(assignDate);
+			assignStatus newStatus;
+
+			if (status == "assigned") {
+				newStatus = assigned;
+			}
+			else if (status == "complete") {
+				newStatus = completed;
+			}
+			else {
+				newStatus = late;
+			}
+
+			assignment newAssignment(newDue, desc, newAssign, newStatus);
+
+			if (newStatus != assigned)
+				assignedList.insert(newAssignment);
+			else
+				completedList.insert(newAssignment);
 		}
 	}
 	in.close();
 
-	Date whatever(dueDate);
 
-	cout << whatever.getMonth() << " " << whatever.getDay() << "  " << whatever.getYear() << endl;
-
-	system("PAUSE");
 }
 
 
