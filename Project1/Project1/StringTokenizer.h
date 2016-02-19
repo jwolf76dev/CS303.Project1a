@@ -2,7 +2,8 @@
 #define STRINGTOKENIZER_H
 #include <string>
 
-int getNumber(int low, int high, std::string message);
+//int getNumber(int low, int high, std::string message);
+
 
 
 /** The string_tokenizer class splits a string into a sequence of subtrings,

@@ -5,14 +5,14 @@
 
 enum assignStatus { assigned, completed, late };
 
-class assignment
+class Assignment
 {
 public:
-	assignment();
+	Assignment();
 
-	assignment(Date newDue, string newDisc, Date newAssign, assignStatus newStatus) :dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
+	Assignment(Date newDue, string newDisc, Date newAssign, assignStatus newStatus) :dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
 
-	assignment(const assignment& a) :dueDate(a.dueDate), assignDate(a.assignDate), description(a.description), status(a.status) {} //Copy Constructor
+	Assignment(const Assignment& a) :dueDate(a.dueDate), assignDate(a.assignDate), description(a.description), status(a.status) {} //Copy Constructor
 
 	//Setters
 	void setDueDate(Date newDate);
@@ -27,7 +27,7 @@ public:
 	assignStatus getStatus();
 
 	
-	~assignment();
+	~Assignment();
 private:
 	Date dueDate;
 	Date assignDate;

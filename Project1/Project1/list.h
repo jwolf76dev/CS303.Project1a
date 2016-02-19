@@ -1,6 +1,5 @@
 #include <cstddef>
 
-
 template<typename Item_Type>
 class list {
 
