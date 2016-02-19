@@ -10,7 +10,7 @@ class assignment
 public:
 	assignment();
 
-	assignment(Date newDue, Date newAssign, string newDisc, assignStatus newStatus) :dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
+	assignment(Date newDue, string newDisc, Date newAssign, assignStatus newStatus) :dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
 
 	assignment(const assignment& a) :dueDate(a.dueDate), assignDate(a.assignDate), description(a.description), status(a.status) {} //Copy Constructor
 

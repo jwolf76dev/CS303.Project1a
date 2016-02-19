@@ -10,6 +10,7 @@
 #include "StringTokenizer.h"
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 using namespace std;
 /* class Date wirtten by Mohammad Kuhail
 e-mail: kuhailm@Umkc.edu
@@ -54,7 +55,7 @@ public:
 	/* parse a date according to a given format*/
 	static Date parseDate(const string& date, DateFormat format){
 
-		String_Tokenizer st(date, "-/,");
+		String_Tokenizer st(date, "-/,.*");
 		int year = 1, month = 1, day = 1;
 
 		int index = 0;
@@ -291,6 +292,12 @@ public:
 	//checks if this date is >= another date
 	bool operator >=(const Date other) const{
 		return this->operator>(other) || this->operator==(other);
+	}
+	
+	//this function reads out to the user
+	friend ostream& operator << (ostream& out, Date& d) {
+		out << d.getMonth() << "-" << d.getDay() << "-" << d.getYear();
+		return out;
 	}
 
 	int getYear() { return year; }
