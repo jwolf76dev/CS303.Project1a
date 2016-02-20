@@ -101,7 +101,7 @@ void main_menu(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 		break;
 	}
 	case 8: {
-		menu.exit();
+		menu.exitProgram();
 		break;
 	}
 

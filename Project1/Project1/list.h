@@ -2,7 +2,6 @@
 
 template<typename Item_Type>
 class list {
-
 private:
 	struct DNode {
 		// Data Fields
@@ -51,7 +50,6 @@ public:
 		}
 	}
 	
-
 	/** Destroy a list. */
 	~list() {
 		while (head != NULL) {
@@ -127,7 +125,6 @@ public:
 		num_items--;
 	}
 
-
 	void pop_back() {
 		if (tail == NULL)
 			throw std::invalid_argument
@@ -153,9 +150,7 @@ public:
 			return iterator(this, tail);
 		}
 		// Create a new node linked before node referenced by pos.
-		DNode* new_node = new DNode(item,
-			pos.current->prev,
-			pos.current); // Step 1
+		DNode* new_node = new DNode(item, pos.current->prev, pos.current); // Step 1
 		// Update links
 		pos.current->prev->next = new_node;     // Step 2
 		pos.current->prev = new_node;           // Step 3
@@ -167,7 +162,6 @@ public:
 		DNode* current_node = head;
 
 		while (current_node != NULL){
-
 			if (current_node->data == item){
 				if (current_node->next == NULL)//the last element in the list
 					return pop_back();
@@ -188,7 +182,6 @@ public:
 				current_node = current_node->next;
 		}
 	}
-	
 	
 	iterator erase(iterator pos) {
 		if (empty())
@@ -221,8 +214,7 @@ public:
 	
 		return num_items == 0;
 	}
-
-
+	
 	Item_Type& back(){
 		if (tail != NULL)
 			return tail->data;
@@ -235,8 +227,7 @@ public:
 		return NULL;
 	}
 
-
-	Item_Type& front(){
+		Item_Type& front(){
 		if (head != NULL)
 			return head->data;
 		return NULL;
@@ -265,4 +256,3 @@ public:
 	}
 
 };
-

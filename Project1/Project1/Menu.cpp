@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
 using namespace std;
 
 void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
@@ -15,24 +16,18 @@ void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
 
 void Menu::displayAssignments()
 {	//TODO: Make it more elegant
-	Ordered_List<Assignment>::iter iter = assignedList.begin();
-	// Use while loop with iterator to go through lists
-	// Create one list for assigned list
-	// Create one list for completed list
-	// Print out file exactly like the file name
-	//Read out the lists
-
-	
-	iter = assignedList.begin();
-
-	string StatusTypes[] ={"assigned","completed","late"}; //Convert enum to  
+	Ordered_List<Assignment>::iter iter = assignedList.begin();	
+	string StatusTypes[] = { "assigned","completed","late" }; // Convert enum to text
 	//TODO: Finish formatting
 
-	cout << "----------------------- Assigned List ----------------------" << endl;
-	cout << "Assigned     Description              Due Date      Status" << endl
+	cout << "----------------------- Assigned List ----------------------" << endl
+		 << " Assigned  Description                Due Date  Status"	   << endl
 	 	 << "------------------------------------------------------------" << endl;
 	while (iter != assignedList.end()) {
-		cout << iter->getAssignDate() << ", " << setw(25) << iter->getDescription() << ", " << iter->getDueDate() << ", " << StatusTypes[iter->getStatus()] << endl;
+		cout << setw(11) << iter->getAssignDate() << " ";
+		cout << setw(26) << left << iter->getDescription() << " ";
+		cout << setw(11) << iter->getDueDate() << " ";
+		cout << StatusTypes[iter->getStatus()] << endl;
 		++iter;
 	}
 	cout << endl;
@@ -198,16 +193,17 @@ void Menu::saveLists()
 	// Let user know that this program is replacing the old file. 
 }
 
-void Menu::exit()
+void Menu::exitProgram()
 {
 	// Tell the user that any unsaved work will be lost. 
 	cout << "Any unsaved data will be lost, are you sure(Y/N)?:";
 	char quit;
 	cin >> quit;
-	if (quit == 'Y' || quit == 'y') {
-		system("pause");
-		exit();
+	if (quit == 'Y' || quit == 'y' || quit == '1') {
+		exit(1);
 	}
+	else
+		cout << endl << "Invalid entry." << endl << endl;
 }
 
 bool Menu::checkformat(Date checkDate)

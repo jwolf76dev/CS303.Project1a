@@ -24,7 +24,7 @@ public:
 	void completeAssignment();
 	void listLateAssignments();
 	void saveLists();
-	void exit();
+	void exitProgram();
 
 	// Error handling
 	bool checkformat(Date checkDate); 
