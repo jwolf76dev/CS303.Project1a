@@ -8,7 +8,7 @@ void main() {
 
 	load_data(assignedList, completedList, menu); // Read-in and populate lists from file
 
-	for (;;) {
+	for (;;) { // Run the main menu forever
 		main_menu(assignedList, completedList,menu); // User interface menu
 	}
 }
