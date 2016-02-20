@@ -16,11 +16,31 @@ public:
 	typedef typename list<Assignment>::iterator iter;
 
 	//Functions
+
+	/** searches for a date in a list
+	@param indate - the date to find
+	*/
+	iter find(Date indate) {
+		// Search through the list looking for the input date
+		typename list<Assignment>::iterator itr = a_list.begin();
+
+		for (itr = a_list.begin(); itr != a_list.end(); ++itr) {
+
+			// Compare the current assigned date to the input date
+			if ((*itr).getAssignDate() == indate) {
+				return itr; // If the date is found, return that iterator
+			}
+		}
+
+		return end(); // Return the end of the list if not found
+	}
+
 	/** inserts a new item into the ordered list, maintaining order.
 	@param an_item The item to be inserted
 	*/
 	void insert(Assignment& an_item){
 		typename list<Assignment>::iterator itr = a_list.begin();
+
 		//Sorts in ascending order by assigned date
 		while (itr != a_list.end() && ((*itr).getAssignDate() < an_item.getAssignDate()==1))
 			++itr; //itr points to the first item >= an_item
@@ -39,19 +59,6 @@ public:
 	/** Return an iterator to the begining */
 	iter begin() {
 		return a_list.begin();
-	}
-
-	iter find(Date indate) {
-		//TODO: Comment
-		typename list<Assignment>::iterator itr = a_list.begin();
-
-		for (itr = a_list.begin(); itr != a_list.end(); ++itr) {
-			if ((*itr).getAssignDate() == indate) {
-				return itr;
-			}
-		}
-
-		return end();
 	}
 
 	/** Return an iterator to the end */

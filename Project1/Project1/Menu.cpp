@@ -3,6 +3,8 @@
 #include <iomanip>
 using namespace std;
 
+string StatusTypes[] = { "assigned","completed","late" }; //Converts enum
+
 void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
 
 	Assignment tempAssign(due, desc, assign, status);
@@ -14,18 +16,9 @@ void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
 }
 
 void Menu::displayAssignments()
-{	//TODO: Make it more elegant
-	Ordered_List<Assignment>::iter iter = assignedList.begin();
-	// Use while loop with iterator to go through lists
-	// Create one list for assigned list
-	// Create one list for completed list
-	// Print out file exactly like the file name
-	//Read out the lists
-
-	
+{	
 	iter = assignedList.begin();
 
-	string StatusTypes[] ={"assigned","completed","late"}; //Convert enum to  
 	//TODO: Finish formatting
 
 	cout << "----------------------- Assigned List ----------------------" << endl;
@@ -48,29 +41,36 @@ void Menu::displayAssignments()
 
 }
 
-void Menu::addAssignment()
+bool Menu::addAssignment()
 {
+	//TODO: Check for uniquness of assignment date
+
+	// Input variables from user
 	Date assignedDate, dueDate;
 	string desc;
 	int statChoice;
 	assignStatus status;
-
-	// Parameters are all the necessary parameters for assigned date (user will use menus). 
-	// Prompt user for the assignedDate in MM/DD/YYYY format. 
+ 
+	// Continue to prompt user until they enter a vaild date
+	do{
 	cout << "When was it assigned? (MM/DD/YYYY)" << endl;
-	cin >> assignedDate; //TODO: Date error checking
+	cin >> assignedDate;
 
-	// Prompt the user for the dueDate in MM/DD/YYYY format. 
 	cout << "When's the due date? (MM/DD/YYYY)" << endl;
 	cin >> dueDate; //TODO: dueDate !<= assigndate
 
+	if (dueDate < assignedDate) {
+		cout << "Due date cannot be before assigned date!" << endl << endl;
+	}
 
+	} while (dueDate < assignedDate);
+
+
+	// Dates are vaild, get description and status
 	cin.ignore(1);
-	// Prompt the user for the description. 
 	cout << "Describe the assignment: " << endl;
 	getline(cin, desc);
 
-	// Prompt the user for the assignedStatus. Maybe put this in the menu()
 	cout << "What's the status?" << endl;
 	cout << "1 - Assigned" << endl
 		 << "2 - Completed" << endl
@@ -85,11 +85,10 @@ void Menu::addAssignment()
 		default: {status = assigned;  cout << "Incorrect option!" << endl; break; } //TODO: fix me! This is dumb.
 	}
 
+	// Add the object
 	addToList(dueDate, desc, assignedDate, status);
 
-	// Check if assigned Date is < due Date
-	// Reprompt if the dates are incorrect - otherwise, break out of this function. 
-
+	return true;
 }
 
 
@@ -101,77 +100,112 @@ bool Menu::editDueDate()
 	Date inDate;
 	cin >> inDate;
 
-	Ordered_List<Assignment>::iter iter= assignedList.begin();
-	
-	iter = assignedList.find(inDate);
-	if (iter == assignedList.end()) {
-		//Not found in Assigned list
-		iter = completedList.find(inDate);
-		if (iter == completedList.end()) {
-			//Not Found in completed List
-			cout << "Assignment Not Found." << endl << endl;
-			return false;
-		}
+	// Look for the date in the lists
+	if (findAssignment(inDate) == false) {
+		return false;
 	}
 
-	//TODO: Edit due date stuff
+	// Output found assignment to user
+	cout << "Here is the assignment you chose:" << endl << endl;
+	cout << iter->getAssignDate() << ", " << iter->getDescription() << ", " << iter->getDueDate() << ", " << StatusTypes[iter->getStatus()] << endl << endl;
+	
+	// Prompt to confirm editing
+	cout << "\nEdit this assignment? Y/n: ";
+	cin.ignore(1);
+	string ch;
+	cin >> ch;
+	if (ch == "n" || ch == "N") {
+		return false; // Exit function if they enter no
+	}
 
+	// Prompt for a new due date until a vaild date is found
+	do {
+		cout << "Enter a new due date (MM/DD/YYYY): ";
+		cin >> inDate;
+	} while (checkformat(inDate, iter) == 0);
 
+	iter->setDueDate(inDate); // Update the assignment
 
-
-
-
-
-
-	// Find date in lists, throw error if it doesn't exist
-	// Display assignment details
-	// prompt to confirm correct assignment to edit - return to main menu if incorrect assignment
-	// if correct assignment, prompt for new due date 
-	// verify new due date > assigned date
-	// Update the assignment
-	cout << "Update complete." << endl << endl;
+	// Inform user of update
+	cout << "\nUpdate complete." << endl << endl;
 	return true;
 }
 
 bool Menu::editDescription()
 {
-	cout << "Enter the assigned date of the assignment to edit. (MM/DD/YYYY)" << endl; //TODO: WORDING OMG
+	// Prompt user for a date
+	cout << "Enter the assigned date of the assignment to edit. (MM/DD/YYYY)" << endl;
 	Date inDate;
 	cin >> inDate;
 
-	Ordered_List<Assignment>::iter iter = assignedList.begin();
-
-	iter = assignedList.find(inDate);
-	if (iter == assignedList.end()) {
-		//Not found in Assigned list
-		iter = completedList.find(inDate);
-		if (iter == completedList.end()) {
-			//Not Found in completed List
-			cout << "Assignment Not Found." << endl << endl;
-			return false;
-		}
+	// If the date is invaild, exit function
+	if (findAssignment(inDate) == false) {
+		return false;
 	}
 
+	// Display found assignment
+	cout << "Here is the assignment you chose:" << endl;
+	cout << iter->getAssignDate() << ", " << iter->getDescription() << ", " << iter->getDueDate() << ", " << StatusTypes[iter->getStatus()] << endl << endl;
 
-	//TODO: Edit description stuff
 
+	// Confirm with user to edit assignment
+	cout << "\nEdit this assignment? Y/n: ";
+	cin.ignore(1);
+	string ch;
+	cin >> ch;
+	if (ch == "n" || ch == "N") {
+		return false; // Exit if user does not want to edit
+	}
 
+	// Prompt user for new description
+	cin.ignore(1);
+	string newDesc;
+	cout << "Enter a description: ";
+	getline(cin,newDesc);
+	
+	iter->setDescription(newDesc); // Set new description
 
-	// Prompt the user for a date
-	// Find date in lists, throw error if it doesn't exist
-	// Display assignment details
-	// prompt to confirm correct assignment to edit - return to main menu if incorrect assignment
-	// if correct assignment, prompt for new description 
-	// Update the assignment
-	cout << "Update complete." << endl;
+	// Inform user of the update
+	cout << "\nUpdate complete." << endl << endl;
 	return true;
 }
 
-void Menu::completeAssignment()
+bool Menu::completeAssignment()
 {
+	// Get the assignment date from the user
+	cout << "Enter the assigned date of the assignment to complete. (MM/DD/YYYY)" << endl;
+	Date inDate;
+	cin >> inDate;
 
-	//TODO: Bool-lize
-	//TODO: iter.find(indate);
+	// Search for the assignment in the assigned list only
+	iter = assignedList.begin();
+
+	iter = assignedList.find(inDate);
+	if (iter == assignedList.end()) {
+		// Not found in Assigned list
+		cout << "Assignment Not Found." << endl << endl;
+		return false; // Exit function
+	}
+	/*
+	completedList.insert(*iter);
+	assignedList.remove(*iter);
+
+	// Prompt the user for the assignedStatus. Maybe put this in the menu()
+	cout << "What's the status?" << endl;
+	cout << "1 - Assigned" << endl
+		<< "2 - Completed" << endl
+		<< "3 - Late" << endl << endl;
+	int statChoice;
+	cin >> statChoice;
+
+	// Use a switch menu to get the status
+	assignStatus status;
+	switch (statChoice) {
+	case 1: {status = assigned; break; }
+	case 2: {status = completed; break; }
+	case 3: {status = late; break; }
+	default: {status = assigned;  cout << "Incorrect option!" << endl; break; } //TODO: fix me! This is dumb.
+	} */
 
 	// Prompt for assigned date
 	// Search the list in the assignedList to find it
@@ -186,9 +220,24 @@ void Menu::completeAssignment()
 
 void Menu::listLateAssignments()
 {
-	// Search the completed list and count the number of late assignments. 
-	// Display the assignments as we find them. 
-	// Increment the count. 
+	cout << "--------------Late assignments--------------------" << endl;
+	iter = completedList.begin(); // Peruse through the completed list only
+	int counter = 0; // Counter for number of late assignments
+
+	// Search the list looking for late assignments only
+	while (iter != completedList.end()) {
+		if (iter->getStatus() == late) {
+			// Display the assignment and increment counter
+			cout << iter->getAssignDate() << ", " << iter->getDescription() << ", " << iter->getDueDate() << ", " << StatusTypes[iter->getStatus()] << endl << endl;
+			++counter;
+		}
+		++iter;
+	}
+
+	// Output the total number of late assignments
+	cout << endl << "Total late assignments: " << counter << endl;
+	cout << "----------------------------------------------------" << endl;
+
 }
 
 void Menu::saveLists()
@@ -205,35 +254,49 @@ void Menu::exit()
 	char quit;
 	cin >> quit;
 	if (quit == 'Y' || quit == 'y') {
-		system("pause");
 		exit();
 	}
 }
+bool Menu::findAssignment(Date inDate) {
+	// This function will search both lists for a specified date
+	
+	// Start in the assigned list
+	iter = assignedList.begin();
 
-bool Menu::checkformat(Date checkDate)
+	iter = assignedList.find(inDate); // This will search a list for the specified date
+	
+	
+	if (iter == assignedList.end()) {
+		// Date was not found in Assigned list
+
+		// Checking the completed list now
+		iter = completedList.find(inDate);
+
+
+		if (iter == completedList.end()) {
+			// Date was not Found in completed List
+			cout << "Assignment Not Found." << endl << endl;
+			return false; // Return false
+		}
+	}
+	return true; // Return true
+}
+
+bool Menu::checkformat(Date inDate, Ordered_List<Assignment>::iter& iter)
 {
-	// Compare the string and check if the date is right
-	// Use the delimiters to check for proper format
-	// Check for uniqueness in both lists. 
-	/*
-
-
-	//Rando Error Checking - for later, bullshit for now
-	/*if (inDate < temp1.getAssignDate()) //If an input date is before assign date
-	{
-	cout << "Error" << endl;
+	// TODO: Check for uniqueness in both lists. 
+	// TODO: Do we need the passed in iterator?
+	
+	if (inDate <= iter->getAssignDate()) {
+		cout << "Error! Due date cannot be before the assigned date." << endl;
+		return 0;
 	}
 
-	if (tempDueDate <= tempAssignDate) //If DueDate <= AssignDate
+	if (inDate == iter->getAssignDate()) //If new assignment date already exists
 	{
-	cout << "Error" << endl;
-	}
-
-	if (tempAssignDate == temp1.getAssignDate()) //If new assignment date already exists
-	{
-	cout << "Error" << endl;
-	}
-
-	*/
+	cout << "Error! Due date cannot be on the assigned date" << endl;
 	return 0;
+	}
+	
+	return 1; // Date is vaild
 }

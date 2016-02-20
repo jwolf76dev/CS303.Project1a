@@ -10,6 +10,7 @@ using namespace std;
 
 string trim(const string& the_string)
 {
+	// Function cuts the string into chunks based on a delimiter
 	size_t p = the_string.find_first_not_of(" ");
 	if (p == string::npos) return "";
 	size_t q = the_string.find_last_not_of(" ");
@@ -19,8 +20,12 @@ string trim(const string& the_string)
 
 // load assignment lists from file
 void load_data(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>& completedList, Menu& menu) {
+	
+	//Variables to hold the line date from the text file
 	string line, dueDate, desc, assignDate, status;
 	ifstream in("assignments.txt");
+	
+	
 	if (in) // Stream exists
 	{
 		while (getline(in, line)) //Read a line from the file
@@ -32,8 +37,7 @@ void load_data(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 			status = trim(st.next_token());
 
 			//Convert tokenized string to date and assignment status
-			Date newDue(dueDate);
-			Date newAssign(assignDate);
+			Date newDue(dueDate), newAssign(assignDate);
 			assignStatus newStatus;
 
 			//Set the enumerated status
@@ -43,10 +47,9 @@ void load_data(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 			else if (status == "completed") {
 				newStatus = completed;
 			}
-			else {
-				newStatus = late;
-			}
+			else { newStatus = late;}
 
+			// Add the item to the list
 			menu.addToList(newDue, desc, newAssign, newStatus);
 		}
 	}
@@ -56,6 +59,8 @@ void load_data(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 
 
 void main_menu(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>& completedList, Menu& menu) {
+	// main_menu is the user interface
+
 	int task;
 	cout << "-----------------Main Menu-------------------" << endl << endl;
 	cout << "Choose an option:" << endl;
@@ -70,41 +75,16 @@ void main_menu(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 	cout << "Your choice: ";
 	cin >> task;
 
-
 	switch (task) {
-	case 1: {
-		menu.displayAssignments();
-		break;
-	}
-	case 2: {
-		menu.addAssignment();
-		break;
-	}
-	case 3: {
-		menu.editDueDate();
-		break;
-	}
-	case 4: {
-		menu.editDescription();
-		break;
-	}
-	case 5: {
-		menu.completeAssignment();
-		break;
-	}
-	case 6: {
-		menu.listLateAssignments();
-		break;
-	}
-	case 7: {
-		menu.saveLists();
-		break;
-	}
-	case 8: {
-		menu.exit();
-		break;
-	}
-
+		case 1: menu.displayAssignments();		break;
+		case 2: menu.addAssignment();			break;
+		case 3: menu.editDueDate();				break;
+		case 4: menu.editDescription();			break;
+		case 5: menu.completeAssignment();		break;
+		case 6: menu.listLateAssignments();		break;
+		case 7: menu.saveLists();				break;
+		case 8: menu.exit();					break;
+		default: cout << "Incorrect option, try again!" << endl << endl;	break;
 	}
 }
 
