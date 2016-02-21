@@ -1,7 +1,0 @@
-2-11-2015, linked lists, 2-2-2015, late
-3-10-2015, stacks, 3-1-2015, assigned
-4-12-2015, doubles, 4-1-2015, completed
-3-11-2015, integers, 3-4-2015, assigned
-2-11-2015, bananas, 2-3-2015, late
-12-12-2015, cherries, 12-1-2015, late
-9-8-2015, bluebrys, 9-7-2015, completed
