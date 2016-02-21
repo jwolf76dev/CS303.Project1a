@@ -28,12 +28,12 @@ void Assignment::setStatus(assignStatus newStatus)
 	status = newStatus;
 }
 
-Date Assignment::getDueDate()
+Date Assignment::getDueDate() const 
 {
 	return dueDate;
 }
 
-Date Assignment::getAssignDate()
+Date Assignment::getAssignDate() const
 {
 	return assignDate;
 }
@@ -46,4 +46,9 @@ string Assignment::getDescription()
 assignStatus Assignment::getStatus()
 {
 	return status;
+}
+
+bool Assignment::operator==(const Assignment rhs) const
+{
+	return getAssignDate() == rhs.getAssignDate(); 
 }

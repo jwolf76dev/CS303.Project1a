@@ -167,7 +167,8 @@ public:
 					return pop_back();
 
 				if (current_node == head) //if the node we are deleting is the head
-					head = current_node->next;
+					head = current_node->next; //Some error is here, throws off remove and Assignment copy constructor
+
 
 				DNode* to_be_deleted = current_node;
 				current_node->next->prev = current_node->prev;
@@ -177,6 +178,7 @@ public:
 				current_node = current_node->next;
 				delete to_be_deleted;
 				num_items--;
+				return; 
 			}
 			else
 				current_node = current_node->next;

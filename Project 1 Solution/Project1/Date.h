@@ -55,7 +55,8 @@ public:
 	static Date parseDate(const string& date, DateFormat format){
 
 		String_Tokenizer st(date, "-/,.*");
-		int year = 1, month = 1, day = 1;
+		//int year = 0, month = 0, day = 0;
+		int year = 1, month = 1, day = 1; 
 
 		int index = 0;
 		while (st.has_more_tokens()){
@@ -89,6 +90,7 @@ public:
 			}
 			++index;
 		}
+
 
 		if (!valid_date(year, month, day))
 			throw std::exception(" The date is not valid");
@@ -296,7 +298,23 @@ public:
 	//this function reads out to the user
 	
 	friend ostream& operator << (ostream& out, Date& d) {
-		out << d.getMonth() << '-' << d.getDay() << '-' << d.getYear();
+		if (d.getMonth() < 10) {
+			out << 0 << d.getMonth();
+		}
+		else
+			out << d.getMonth(); 
+
+		out << "-"; 
+
+		if (d.getDay() < 10) {
+			out << 0 << d.getDay();
+		}
+		else
+			out << d.getDay(); 
+
+		out << "-"; 
+		out << d.getYear(); 
+		//out << d.getMonth() << '-' << d.getDay() << '-' << d.getYear();
 		return out;
 	}
 

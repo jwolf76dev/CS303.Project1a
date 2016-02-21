@@ -21,12 +21,12 @@ public:
 	void setStatus(assignStatus newStatus);
 
 	//Getters
-	Date getDueDate();
-	Date getAssignDate();
+	Date getDueDate() const;
+	Date getAssignDate() const;
 	string getDescription();
 	assignStatus getStatus();
+	bool operator==(const Assignment rhs) const; 
 
-	
 	~Assignment();
 private:
 	Date dueDate;

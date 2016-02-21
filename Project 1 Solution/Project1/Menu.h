@@ -21,22 +21,22 @@ public:
 	~Menu() {} 
 
 	void addToList(Date due, string desc, Date assign, assignStatus status); //working
-	void displayAssignments(); //TODO: Formatting
+	void displayAssignments(); //working
 
 	// Modifiers
-	bool addAssignment(); //TODO: Check for unique assignment date
+	bool addAssignment(); // Pretty much completed, check for it again
 	bool findAssignment(Date inDate); // working
 	bool editDueDate(); // working
 	bool editDescription(); // working
-	bool completeAssignment(); //TODO: moving the assignment
+	bool completeAssignment(); //Pretty much completed, check for it again. 
 
 
 	void listLateAssignments(); // working
-	void saveLists(); //TODO: SAVE FUNCTION IS EMPTY
-	void exitProgram(); //TODO: EXIT DOESN'T EXIT OMG
+	void saveLists(); //Pretty much completed, check for it again.
+	void exitProgram(); //Pretty much completed, check for it again. 
 
 	// Error handling
-	bool checkformat(Date checkDate, Ordered_List<Assignment>::iter& iter); //TODO: Do we need the iterator passed in?????????
+	bool checkformat(Date checkDate, Ordered_List<Assignment>::iter& iter); //TODO: Do we need the iterator passed in????????? IDK MAN
 };
 
 #endif

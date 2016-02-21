@@ -33,7 +33,7 @@ void load_data(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 			String_Tokenizer st(line, ","); //parse the tokens in the line (separated by a comma)	
 			dueDate = trim(st.next_token());
 			desc = trim(st.next_token());
-			assignDate = trim(st.next_token());
+			assignDate = trim(st.next_token()); 
 			status = trim(st.next_token());
 
 			//Convert tokenized string to date and assignment status

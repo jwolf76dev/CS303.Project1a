@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #include <cstdlib>
 using namespace std;
@@ -20,32 +21,34 @@ void Menu::displayAssignments()
 {	//TODO: Make it more elegant
 	Ordered_List<Assignment>::iter iter = assignedList.begin();	
 	string StatusTypes[] = { "assigned","completed","late" }; // Convert enum to text
-	//TODO: Finish formatting
+	string bar = "--------------------------------------------------"; 
+	string tableHeader = "Assigned   Description         Due Date   Status"; 
 
-	cout << "------------- Assigned List ------------" << endl
-		 << "Assigned  Description  Due Date  Status" << endl
-	 	 << "----------------------------------------" << endl;
+	cout << "------------------ Assigned List -----------------" << endl
+		<< tableHeader << endl << bar << endl; 
+	
 	while (iter != assignedList.end()) {
-		cout << iter->getAssignDate() << ", " << iter->getDescription() << ", " << iter->getDueDate() << ", " << StatusTypes[iter->getStatus()] << endl;
-		++iter;
+		cout << iter->getAssignDate() << "|"; 
+		cout << setw(20) << left << iter->getDescription() << "|"; 
+		cout << iter->getDueDate() << "|"; 
+		cout << StatusTypes[iter->getStatus()] << endl; 
+		++iter; 
 	}
-	cout << endl;
-
+		
 	iter = completedList.begin();
-	cout << "------- Completed and Late List --------" << endl
-		 << "Assigned  Description  Due Date  Status" << endl
-		 << "----------------------------------------" << endl;
-	while (iter != completedList.end()) {
-		cout << iter->getAssignDate() << ", " << iter->getDescription() << ", " << iter->getDueDate() << ", " << StatusTypes[iter->getStatus()] << endl;
+	cout << "------------ Completed and Late List -------------" << endl
+		<< tableHeader << endl << bar << endl; 
+	while (iter != assignedList.end()) {
+		cout << iter->getAssignDate() << "|";
+		cout << setw(20) << left << iter->getDescription() << "|";
+		cout << iter->getDueDate() << "|";
+		cout << StatusTypes[iter->getStatus()] << endl;
 		++iter;
 	}
-
 }
 
 bool Menu::addAssignment()
 {
-	//TODO: Check for uniquness of assignment date
-
 	// Input variables from user
 	Date assignedDate, dueDate;
 	string desc;
@@ -54,24 +57,25 @@ bool Menu::addAssignment()
 
 	// Continue to prompt user until they enter a vaild date
 	cout << "When was it assigned? (MM/DD/YYYY)" << endl;
-	cin >> assignedDate;
 	do {
+		cin >> assignedDate;
 		// look for entry in list
 		if (findAssignment(assignedDate) == true){
-			cout << "Error: This assignment already exists. Please check the date and try again." << endl;
-			cin >> assignedDate;
+			cout << "Error: This assignment already exists. Please check the date and try again." << endl;	
 		}
-	} while (findAssignment(assignedDate) == true); 
+		if (assignedDate.getYear() < 2000 || assignedDate.getYear() > 2016) { //By default, if the user only enters in one number, the default will be 1. Which is wrong. 
+			cout << "Error: The date entered was in incorrect, please make sure that the year is between 2000 and 2016" << endl; 
+		}
+	} while (findAssignment(assignedDate) == true || assignedDate.getYear() < 2000 || assignedDate.getYear() > 2016); // Checks to  make sure that it's a unique assignment and it's a correct year
 
 	cout << "When's the due date? (MM/DD/YYYY)" << endl;
-	cin >> dueDate; //TODO: dueDate !<= assigndate
-
-	if (dueDate < assignedDate) {
-		cout << "Due date cannot be before assigned date!" << endl << endl;
-	}
-
-	while (dueDate < assignedDate);
-
+	cin >> dueDate; 
+	do {
+		if (dueDate < assignedDate) {
+			cout << "Due date cannot be before assigned date! Please enter in a new date" << endl; 
+			cin >> dueDate; 
+		}
+	} while (dueDate < assignedDate); 
 
 	// Dates are vaild, get description and status
 	cin.ignore(1);
@@ -91,7 +95,7 @@ bool Menu::addAssignment()
 		case 3: {status = late; break; }
 		default: {status = assigned;  cout << "Incorrect option!" << endl;}
 		}
-	} while (statChoice > 3); 
+	} while (statChoice > 3 || statChoice < 1); 
 	
 
 	// Add the object
@@ -103,7 +107,7 @@ bool Menu::addAssignment()
 bool Menu::editDueDate()
 {
 	// Prompt the user for a date
-	cout << "Enter the assigned date of the assignment to edit. (MM/DD/YYYY)" << endl; //TODO: WORDING OMG
+	cout << "Enter the assigned date of the homework to edit. (MM/DD/YYYY)" << endl; //TODO: WORDING OMG Better (Binh?)
 	Date inDate;
 	cin >> inDate;
 
@@ -188,42 +192,34 @@ bool Menu::completeAssignment()
 
 	// Search for the assignment in the assigned list only
 	iter = assignedList.begin();
-
 	iter = assignedList.find(inDate);
-	if (iter == assignedList.end()) {
-		// Not found in Assigned list
-		cout << "Assignment Not Found." << endl << endl;
-		return false; // Exit function
+
+	iter = assignedList.find(inDate); // Search the list for the specified date, .find() will return the end() if not found. 
+	if (iter == assignedList.end()) { // If date was not found in Assigned list
+		cout << "Assignment Not Found. Please check assignments by using Display Assignments. "; 
+		return false; // Return assignment not found
 	}
-	/*
-	completedList.insert(*iter);
-	assignedList.remove(*iter);
 
-	// Prompt the user for the assignedStatus. Maybe put this in the menu()
-	cout << "What's the status?" << endl;
-	cout << "1 - Assigned" << endl
-		<< "2 - Completed" << endl
-		<< "3 - Late" << endl << endl;
-	int statChoice;
-	cin >> statChoice;
+	cout << "Please enter the date you completed the assignment" << endl; 
+	Date completedDate; 
+	do {
+		cin >> completedDate;
+		// Then check if the completed date is greater than the assigned date, and if not, then it's invalid
+		if (completedDate < inDate) {
+			cout << "This completed date is before the assignment date. Please try again. " << endl; 
+		}
+	} while (completedDate < inDate); 
 
-	// Use a switch menu to get the status
-	assignStatus status;
-	switch (statChoice) {
-	case 1: {status = assigned; break; }
-	case 2: {status = completed; break; }
-	case 3: {status = late; break; }
-	default: {status = assigned;  cout << "Incorrect option!" << endl; break; } //TODO: fix me! This is dumb.
-	} */
-
-	// Prompt for assigned date
-	// Search the list in the assignedList to find it
-	// Throw error if not found. 
-	// If found, prompt for completed date
-	// Check format
-	// Then check if the completed date is greater than the assigned date, and if not, then it's invalid
 	// If it's valid, if the completed date is before or equal to the due date, then mark it as completed
-	// If it's past the due date, mark it as late. 
+	if (completedDate < iter->getDueDate()) {
+		iter->setStatus(completed);
+	}
+	// If it's past the due date, mark it as late.
+	else
+		iter->setStatus(late); 
+
+	completedList.insert(*iter);
+	assignedList.remove(*iter);  
 }
 
 
@@ -252,8 +248,27 @@ void Menu::listLateAssignments()
 void Menu::saveLists()
 {
 	// Overload the output operator
-	// Reading out to old file
+	fstream fout;
+	fout.open("assignments.txt"); 
+
 	// Let user know that this program is replacing the old file. 
+	cout << "This is replacing the old assignments.txt file" << endl; 
+
+	// Reading out to old file
+	iter = assignedList.begin(); 
+	while (iter != assignedList.end()) {
+		fout << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << StatusTypes[iter->getStatus()] <<endl;
+		++iter; 
+	}
+
+	iter = completedList.begin(); 
+	while (iter != completedList.end()) {
+		fout << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << StatusTypes[iter->getStatus()] << endl;
+		++iter; 
+	}
+
+	return; 
+
 }
 
 void Menu::exitProgram()
@@ -284,8 +299,7 @@ bool Menu::findAssignment(Date inDate) {
 	}
 
 bool Menu::checkformat(Date inDate, Ordered_List<Assignment>::iter& iter)
-	{
-	// TODO: Check for uniqueness in both lists. 
+	{ 
 	// TODO: Do we need the passed in iterator?
 	
 	if (inDate <= iter->getAssignDate()) {
