@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <iostream>
 using namespace std;
+
 /* class Date wirtten by Mohammad Kuhail
 e-mail: kuhailm@Umkc.edu
 */
@@ -298,6 +299,7 @@ public:
 	//this function reads out to the user
 	
 	friend ostream& operator << (ostream& out, Date& d) {
+		//Format it so that there is a leading 0 in extra years. 
 		if (d.getMonth() < 10) {
 			out << 0 << d.getMonth();
 		}
@@ -314,7 +316,6 @@ public:
 
 		out << "-"; 
 		out << d.getYear(); 
-		//out << d.getMonth() << '-' << d.getDay() << '-' << d.getYear();
 		return out;
 	}
 

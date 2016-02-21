@@ -5,14 +5,20 @@
 
 enum assignStatus { assigned, completed, late };
 
-class Assignment
-{
+class Assignment {
+private:
+	Date dueDate;
+	Date assignDate;
+	string description;
+	assignStatus status;
 public:
+	//Constructors
 	Assignment();
-
 	Assignment(Date newDue, string newDisc, Date newAssign, assignStatus newStatus) :dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
-
 	Assignment(const Assignment& a) :dueDate(a.dueDate), assignDate(a.assignDate), description(a.description), status(a.status) {} //Copy Constructor
+
+	//Destructor
+	~Assignment();
 
 	//Setters
 	void setDueDate(Date newDate);
@@ -23,16 +29,11 @@ public:
 	//Getters
 	Date getDueDate() const;
 	Date getAssignDate() const;
-	string getDescription();
-	assignStatus getStatus();
-	bool operator==(const Assignment rhs) const; 
+	string getDescription() const;
+	assignStatus getStatus() const;
 
-	~Assignment();
-private:
-	Date dueDate;
-	Date assignDate;
-	string description;
-	assignStatus status;
+	//Other
+	bool operator==(const Assignment rhs) const; 
 };
 
 #endif

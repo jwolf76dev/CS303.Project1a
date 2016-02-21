@@ -5,38 +5,34 @@
 #include "Date.h"
 #include "Ordered_List.h"
 
-class Menu
-{
-private: 
+class Menu {
+private:
 	Ordered_List<Assignment> assignedList;
 	Ordered_List<Assignment> completedList;
 	Ordered_List<Assignment>::iter iter = assignedList.begin();
 
-public: 
+public:
 	//Constructors
 	Menu() {}
 	Menu(Ordered_List<Assignment>& aList, Ordered_List<Assignment>& cList) : assignedList(aList), completedList(cList) {}
-	
+
 	//Destructor
-	~Menu() {} 
+	~Menu() {}
 
-	void addToList(Date due, string desc, Date assign, assignStatus status); //working
-	void displayAssignments(); //working
+	//Modifiers
+	bool addAssignment();
+	bool findAssignment(Date inDate);
+	bool editDueDate();
+	bool editDescription();
+	bool completeAssignment();
 
-	// Modifiers
-	bool addAssignment(); // Pretty much completed, check for it again
-	bool findAssignment(Date inDate); // working
-	bool editDueDate(); // working
-	bool editDescription(); // working
-	bool completeAssignment(); //Pretty much completed, check for it again. 
+	//Other menu options
+	void displayAssignments();
+	void listLateAssignments();
+	void saveLists();
+	void exitProgram();
 
-
-	void listLateAssignments(); // working
-	void saveLists(); //Pretty much completed, check for it again.
-	void exitProgram(); //Pretty much completed, check for it again. 
-
-	// Error handling
-	bool checkformat(Date checkDate, Ordered_List<Assignment>::iter& iter); //TODO: Do we need the iterator passed in????????? IDK MAN
-};
-
+	//Other
+	void addToList(Date due, string desc, Date assign, assignStatus status);
+}; 
 #endif

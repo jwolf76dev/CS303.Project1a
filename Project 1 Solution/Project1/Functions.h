@@ -8,9 +8,8 @@
 #include <fstream>
 using namespace std;
 
-string trim(const string& the_string)
-{
-	// Function cuts the string into chunks based on a delimiter
+string trim(const string& the_string) {
+	//Function cuts the string into chunks based on a delimiter
 	size_t p = the_string.find_first_not_of(" ");
 	if (p == string::npos) return "";
 	size_t q = the_string.find_last_not_of(" ");
@@ -18,19 +17,19 @@ string trim(const string& the_string)
 	return the_string.substr(p, q - p + 1);
 }
 
-// load assignment lists from file
-void load_data(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>& completedList, Menu& menu) {
+//Load assignment lists from file
+void loadData(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>& completedList, Menu& menu) {
 	
 	//Variables to hold the line date from the text file
 	string line, dueDate, desc, assignDate, status;
 	ifstream in("assignments.txt");
 	
-	
-	if (in) // Stream exists
+	if (in) //Stream exists
 	{
 		while (getline(in, line)) //Read a line from the file
 		{
-			String_Tokenizer st(line, ","); //parse the tokens in the line (separated by a comma)	
+			//Parse the tokens in the line (separated by a comma)
+			String_Tokenizer st(line, ","); 	
 			dueDate = trim(st.next_token());
 			desc = trim(st.next_token());
 			assignDate = trim(st.next_token()); 
@@ -49,17 +48,17 @@ void load_data(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 			}
 			else { newStatus = late;}
 
-			// Add the item to the list
+			//Add the item to the list
 			menu.addToList(newDue, desc, newAssign, newStatus);
 		}
 	}
-	// close the input stream
+	//Close the input stream
 	in.close();
 }
 
 
 void main_menu(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>& completedList, Menu& menu) {
-	// main_menu is the user interface
+	//main_menu is the user interface
 
 	int task;
 	cout << "-----------------Main Menu-------------------" << endl << endl;
@@ -83,7 +82,7 @@ void main_menu(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 		case 5: menu.completeAssignment();		break;
 		case 6: menu.listLateAssignments();		break;
 		case 7: menu.saveLists();				break;
-		case 8: menu.exitProgram();					break;
+		case 8: menu.exitProgram();				break;
 		default: cout << "Incorrect option, try again!" << endl << endl;	break;
 	}
 }

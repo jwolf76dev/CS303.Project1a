@@ -1,54 +1,43 @@
 #include "Assignment.h"
 
-Assignment::Assignment()
-{	
+Assignment::Assignment() {	
 }
 
-Assignment::~Assignment()
-{
+Assignment::~Assignment() {
 }
 
-void Assignment::setDueDate(Date newDate)
-{
+void Assignment::setDueDate(Date newDate) {
 	dueDate = newDate;
 }
 
-void Assignment::setAssignDate(Date newDate)
-{
+void Assignment::setAssignDate(Date newDate) {
 	assignDate = newDate;
 }
 
-void Assignment::setDescription(string newDescription)
-{
+void Assignment::setDescription(string newDescription) {
 	description = newDescription;
 }
 
-void Assignment::setStatus(assignStatus newStatus)
-{
+void Assignment::setStatus(assignStatus newStatus) {
 	status = newStatus;
 }
 
-Date Assignment::getDueDate() const 
-{
+Date Assignment::getDueDate() const {
 	return dueDate;
 }
 
-Date Assignment::getAssignDate() const
-{
+Date Assignment::getAssignDate() const {
 	return assignDate;
 }
 
-string Assignment::getDescription()
-{
+string Assignment::getDescription() const {
 	return description;
 }
 
-assignStatus Assignment::getStatus()
-{
+assignStatus Assignment::getStatus() const {
 	return status;
 }
 
-bool Assignment::operator==(const Assignment rhs) const
-{
+bool Assignment::operator==(const Assignment rhs) const {
 	return getAssignDate() == rhs.getAssignDate(); 
 }
