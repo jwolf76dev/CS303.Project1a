@@ -1,20 +1,19 @@
 #ifndef ORDERED_LIST_H_
 #define ORDERED_LIST_H_
 #include "list.h"
-#include "Assignment.h"
 
 //Code written by Kuhail
 /* The ordered list maintains a list of objects ordered by their less-than operator*/
-template<typename Assignment>
+template<typename Item_Type>
 class Ordered_List {
 
 private:
 	/**A list to contain the ordered list*/
-	list<Assignment> a_list;
+	list<Item_Type> a_list;
 
 public:
 	//Typedef
-	typedef typename list<Assignment>::iterator iter;
+	typedef typename list<Item_Type>::iterator iter;
 
 	//Functions
 
@@ -23,7 +22,7 @@ public:
 	*/
 	iter find(Date indate) {
 		// Search through the list looking for the input date
-		typename list<Assignment>::iterator itr = a_list.begin();
+		typename list<Item_Type>::iterator itr = a_list.begin();
 
 		for (itr = a_list.begin(); itr != a_list.end(); ++itr) {
 
@@ -39,21 +38,21 @@ public:
 	/** inserts a new item into the ordered list, maintaining order.
 	@param an_item The item to be inserted
 	*/
-	void insert(Assignment& an_item){
-		typename list<Assignment>::iterator itr = a_list.begin();
+	void insert(Item_Type& an_item) {
+		typename list<Item_Type>::iterator itr = a_list.begin();
 
 		//Sorts in ascending order by assigned date
-		while (itr != a_list.end() && ((*itr).getAssignDate() < an_item.getAssignDate()==1))
+		while (itr != a_list.end() && ((*itr).getAssignDate() < an_item.getAssignDate() == 1))
 			++itr; //itr points to the first item >= an_item
-			//or the end
+				   //or the end
 		a_list.insert(itr, an_item);
-		
+
 	}
 
 	/** Remove an item from the ordered list.
 	@param item The value to be removed
 	*/
-	void remove(const Assignment& item){
+	void remove(const Item_Type& item) {
 		a_list.remove(item);
 	}
 
@@ -63,7 +62,7 @@ public:
 	}
 
 	/** Return an iterator to the end */
-	iter end()  {
+	iter end() {
 		return a_list.end();
 	}
 

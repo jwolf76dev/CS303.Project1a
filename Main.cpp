@@ -1,14 +1,25 @@
+/**************************************************************
+ CS 303 - Program 1a - Spring 2016
+ Collaborative effort of Kati Williams, Binh Mai, and Jay Wolf
+ with support code from Prof. M. Kuhail
+**************************************************************/
+
 #include "Functions.h"
 
 void main() {
-	Ordered_List<Assignment> assignedList; //List of "assigned" assignments
-	Ordered_List<Assignment> completedList; //List of "completed" and "late" assignments
+	//Create assignment lists
+	Ordered_List<Assignment> assignedList;
+	Ordered_List<Assignment> completedList;
 
-	Menu menu(assignedList, completedList); //Menu object for manipulating lists and UI
+	//Create Menu object for interaction with lists
+	Menu menu(assignedList, completedList);
 
-	loadData(assignedList, completedList, menu); //Read-in and populate lists from file
+	//Load and populate lists from file
+	//Uses addToList function from Menu
+	loadData(assignedList, completedList, menu);
 
-	for (;;) { //Run the main menu forever
-		main_menu(assignedList, completedList,menu); //User interface menu
+	//User interface menu
+	for (;;) { //Run the main menu until program exit
+		main_menu(assignedList, completedList, menu);
 	}
 }

@@ -13,27 +13,29 @@ private:
 	assignStatus status;
 public:
 	//Constructors
-	Assignment();
-	Assignment(Date newDue, string newDisc, Date newAssign, assignStatus newStatus) :dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
-	Assignment(const Assignment& a) :dueDate(a.dueDate), assignDate(a.assignDate), description(a.description), status(a.status) {} //Copy Constructor
+	Assignment() { ; }
+	Assignment(Date newDue, string newDisc, Date newAssign, assignStatus newStatus) : dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
+	
+	//Copy Constructor
+	Assignment(const Assignment& a) : dueDate(a.dueDate), assignDate(a.assignDate), description(a.description), status(a.status) {}
 
 	//Destructor
-	~Assignment();
+	~Assignment() { ; }
 
 	//Setters
-	void setDueDate(Date newDate);
-	void setAssignDate(Date newDate);
-	void setDescription(string newDescription);
-	void setStatus(assignStatus newStatus);
+	void setDueDate(Date newDate) { dueDate = newDate; }
+	void setAssignDate(Date newDate) { assignDate = newDate; }
+	void setDescription(string newDescription) { description = newDescription; }
+	void setStatus(assignStatus newStatus) { status = newStatus; }
 
 	//Getters
-	Date getDueDate() const;
-	Date getAssignDate() const;
-	string getDescription() const;
-	assignStatus getStatus() const;
+	Date getDueDate() const { return dueDate;  }
+	Date getAssignDate() const { return assignDate; }
+	string getDescription() const { return description; }
+	assignStatus getStatus() const { return status; }
 
-	//Other
-	bool operator==(const Assignment rhs) const; 
+	//Overloaded operators
+	bool operator==(const Assignment rhs) const { return getAssignDate() == rhs.getAssignDate(); }
 };
 
 #endif

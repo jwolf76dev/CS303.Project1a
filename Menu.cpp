@@ -24,11 +24,10 @@ void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
 
 void Menu::displayAssignments() {
 	string bar = "--------------------------------------------------------------"; 
-	string tableHeader = "Assigned   Description                   Due Date   Status"; 
+	string tableHeader = " Assigned  Description                     Due Date   Status"; 
 
 	cout << endl << "------------------------ Assigned List -----------------------" << endl
 		<< tableHeader << endl << bar << endl; 
-	//TODO: Have the description be somehow truncated if it exceeds 20 characters
 
 	iter = assignedList.begin();
 	while (iter != assignedList.end()) {
@@ -52,98 +51,136 @@ void Menu::displayAssignments() {
 }
 
 bool Menu::addAssignment() {
-	//Input variables from user
+	//Input variables
 	Date assignedDate, dueDate;
 	string desc;
 	int statChoice;
 	assignStatus status;
 
-	//Continue to prompt user until they enter a vaild date
-	cout << "When was it assigned? (MM/DD/YYYY)" << endl;
+	cout << endl << "** Add Assignment **" << endl;
+	//Prompt user for assigned date
 	do {
+		cout << endl << "When was it assigned? (MM/DD/YYYY): ";
 		cin >> assignedDate;
-		//Look for entry in list
+
+		//Verify unique assigned date
 		if (findAssignment(assignedDate) == true) {
-			cout << "Error: This assignment already exists. Please check the date and try again." << endl;	
+			cout << "Error: This assignment already exists." <<endl
+				 << "Please check the date and try again." << endl;
 		}
-		if (assignedDate.getYear() < 2000) { //By default, if the user only enters in one number, the default will be 1.
-			cout << "Error: The date entered was in incorrect, please make sure that the year is after 2000" << endl; 
-		}
-	} while (findAssignment(assignedDate) == true || assignedDate.getYear() < 2000); //Checks to  make sure that it's a unique assignment and it's a correct year
 
-	cout << "When's the due date? (MM/DD/YYYY)" << endl;
-	cin >> dueDate; 
+		//Verify valid assigned date
+		if (assignedDate.getYear() < 2000) {
+			cout << "Error: The date entered is invalid." << endl
+				 << "Please make sure that the year is after 2000." << endl;
+		}
+	//Re-prompt if either condition fails
+	} while (findAssignment(assignedDate) == true || assignedDate.getYear() < 2000);
+
+	//Prompt user for due date
 	do {
-		if (dueDate < assignedDate) {
-			cout << "Due date cannot be before assigned date! Please enter in a new date" << endl; 
-			cin >> dueDate; 
-		}
-	} while (dueDate < assignedDate); 
+		cout << endl << "When is/was it due? (MM/DD/YYYY): ";
+		cin >> dueDate;
 
-	//Dates are vaild, get description and status
+		//Verify valid due date
+		if (dueDate < assignedDate) {
+			cout << "Error: The due date cannot be before the assigned date." << endl
+				 << "Please check the date and try again." << endl;
+		}
+	//Re-prompt if condition fails
+	} while (dueDate < assignedDate); 
+	
+	//Prompt user for assignment description
 	cin.ignore(1);
-	cout << "Describe the assignment: " << endl;
+	cout << endl << "Describe the assignment: ";
 	getline(cin, desc);
 
-	//Use a switch menu to get the status
+	//Prompt user for assignment status
 	do {
-		cout << "What's the status?" << endl;
+		cout << endl << "What is the assignment status?" << endl;
 		cout << "1 - Assigned" << endl
-			<< "2 - Completed" << endl
-			<< "3 - Late" << endl << endl;
+			 << "2 - Completed" << endl
+			 << "3 - Late" << endl
+			 << "Status: ";
 		cin >> statChoice;
+
 		switch (statChoice) {
 		case 1: {status = assigned; break; }
 		case 2: {status = completed; break; }
 		case 3: {status = late; break; }
-		default: {status = assigned;  cout << "Incorrect option!" << endl;}
+		default: {status = assigned;  cout << "Invalid option. Please select 1, 2, or 3." << endl;} // I don't think this is right...
 		}
-	} while (statChoice > 3 || statChoice < 1); 
-
+	//Re-prompt if condition fails
+	} while (statChoice > 3 || statChoice < 1);
+		
 	//Add the object
 	addToList(dueDate, desc, assignedDate, status);
-
+	cout << endl << "** Assignment added. **" << endl;
 	return true;
 }
 
 bool Menu::editDueDate() {
-	//Prompt the user for a date
-	cout << "Enter the assigned date of the homework to edit. (MM/DD/YYYY)" << endl;
+	//Variables
 	Date inDate;
+	char ch;
+	string tableHeader = " Assigned  Description                     Due Date   Status";
+	string bar = "--------------------------------------------------------------";
+	
+	cout << endl << "** Edit Assignment Due Date **" << endl;
+
+	//Prompt user for assigned date
+	cout << endl << "When was it assigned? (MM/DD/YYYY): ";
 	cin >> inDate;
 
-	//Look for the date in the lists
+	//Search for the date in the lists
 	if (findAssignment(inDate) == false) {
-		cout << "Assignment not found" << endl; 
+		cout << "Error: Assignment not found." << endl;
 		return false;
-		}
-
-	//Output found assignment to user
-	cout << "Here is the assignment you chose:" << endl << endl;
-	cout << iter->getAssignDate() << ", " << iter->getDescription() << ", " << iter->getDueDate() << ", " << statusTypes[iter->getStatus()] << endl << endl;
-
-	//Prompt to confirm editing
-	cout << "\nEdit this assignment? Y/N: ";
-	cin.ignore(1);
-	string ch;
-	cin >> ch;
-	if (ch == "n" || ch == "N") {
-		return false; //Exit function if they enter no
 	}
 
-	//Prompt for a new due date until a vaild date is found
-	cout << "Enter a new due date (MM/DD/YYYY): ";
+	//Output assignment to user
+	cout << endl << "--------------------- Assignment Details ---------------------" << endl;
+	cout << tableHeader << endl << bar << endl; 
+	cout << iter->getAssignDate() << "|";
+	cout << setw(30) << left << iter->getDescription().substr(0, 30) << "|";
+	cout << iter->getDueDate() << "|";
+	cout << statusTypes[iter->getStatus()] << endl;
+	cout << bar;
+
+	//Prompt to confirm editing
 	do {
-		cin >> inDate;
-		if (inDate < iter->getAssignDate()) {
-			cout << "Error: The new due date must be after the assigned date. Please enter a new date: " << endl; 
+		cout << endl << "Edit this assignment? Y/N: ";
+		cin >> ch;
+		cin.ignore(1);
+
+		//Check for valid response
+		if (ch != 'n' || 'N' || 'y' || 'Y') {
+			cout << "Invalid entry. Please try again." << endl;
 		}
-	} while (inDate < iter->getAssignDate());
+	// Re-prompt if invalid response
+	} while (ch != 'n' || 'N' || 'y' || 'Y');
 
-	iter->setDueDate(inDate); //Update the assignment
+	if (ch == 'n' || ch == 'N') {
+		return false;
+	}
+	else {
+		do {
+			//Prompt user for new due date
+			cout << endl << "Enter the new due date (MM/DD/YYYY): ";
+			cin >> inDate;
 
-	//Inform user of update
-	cout << "\nUpdate complete." << endl << endl;
+			//Verify valid due date
+			if (inDate < iter->getAssignDate()) {
+				cout << "Error: The due date cannot be before the assigned date." << endl
+					<< "Please check the date and try again." << endl;
+			}
+			//Re-prompt if condition fails
+		} while (inDate < iter->getAssignDate());
+	}
+
+	//Update the assignment
+	iter->setDueDate(inDate);
+	cout << endl << "** Assignment updated. **" << endl;
 	return true;
 }
 
@@ -225,7 +262,7 @@ bool Menu::completeAssignment() {
 
 void Menu::listLateAssignments() {
 	string bar = "--------------------------------------------------------------";
-	string tableHeader = "Assigned   Description                   Due Date   Status";
+	string tableHeader = " Assigned  Description                     Due Date   Status";
 	cout << endl << "--------------------- Late assignments -----------------------" << endl
 		<< tableHeader << endl << bar << endl;
 	//Peruse through the completed list only
