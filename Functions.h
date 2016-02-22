@@ -28,6 +28,8 @@ void loadData(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>& 
 	{
 		while (getline(in, line)) //Read a line from the file
 		{
+			if (line == "")
+				continue;
 			//Parse the tokens in the line (separated by a comma)
 			String_Tokenizer st(line, ","); 	
 			dueDate = trim(st.next_token());
@@ -61,7 +63,7 @@ void main_menu(Ordered_List<Assignment>& assignedList, Ordered_List<Assignment>&
 	//main_menu is the user interface
 
 	int task;
-	cout << "-----------------Main Menu-------------------" << endl << endl;
+	cout << endl << "------------------------ Main Menu ---------------------------" << endl << endl;
 	cout << "Choose an option:" << endl;
 	cout << "1 - Display assignments" << endl
 		<< "2 - Add an assignment" << endl

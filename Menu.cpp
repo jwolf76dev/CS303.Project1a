@@ -10,8 +10,6 @@ using namespace std;
 //Indentation needs to look same
 //Language, style, and grammar of prompts need to look consistent. 
 //Most comments should be the line above, and need to be similar. 
-//TODO : Truncate the assignment description in displayAssignments
-//Check if we need the iterator passed in
 
 string statusTypes[] = { "assigned","completed","late" }; //Converts enum
 
@@ -25,28 +23,28 @@ void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
 }
 
 void Menu::displayAssignments() {
-	string bar = "------------------------------------------------------------"; 
+	string bar = "--------------------------------------------------------------"; 
 	string tableHeader = "Assigned   Description                   Due Date   Status"; 
 
-	cout << "----------------------- Assigned List ----------------------" << endl
+	cout << endl << "------------------------ Assigned List -----------------------" << endl
 		<< tableHeader << endl << bar << endl; 
 	//TODO: Have the description be somehow truncated if it exceeds 20 characters
 
 	iter = assignedList.begin();
 	while (iter != assignedList.end()) {
 		cout << iter->getAssignDate() << "|"; 
-		cout << setw(30) << left << iter->getDescription() << "|"; 
+		cout << setw(30) << left << iter->getDescription().substr(0, 30) << "|"; 
 		cout << iter->getDueDate() << "|"; 
 		cout << statusTypes[iter->getStatus()] << endl; 
 		++iter; 
 	}
 		
 	iter = completedList.begin();
-	cout << "----------------- Completed and Late List ------------------" << endl
+	cout << endl << "------------------ Completed and Late List -------------------" << endl
 		<< tableHeader << endl << bar << endl; 
 	while (iter != assignedList.end()) {
 		cout << iter->getAssignDate() << "|";
-		cout << setw(30) << left << iter->getDescription() << "|";
+		cout << setw(30) << left << iter->getDescription().substr(0, 30) << "|";
 		cout << iter->getDueDate() << "|";
 		cout << statusTypes[iter->getStatus()] << endl;
 		++iter;
@@ -199,7 +197,7 @@ bool Menu::completeAssignment() {
 
 	iter = assignedList.find(inDate); //Search the list for the specified date, .find() will return the end() if not found. 
 	if (iter == assignedList.end()) { //If date was not found in Assigned list
-		cout << "Assignment Not Found. Please check assignments by using Display Assignments. "; 
+		cout << "Assignment Not Found. Please check assignments by using Display Assignments. " << endl; 
 		return false; //Return assignment not found
 	}
 
@@ -226,9 +224,9 @@ bool Menu::completeAssignment() {
 }
 
 void Menu::listLateAssignments() {
-	string bar = "------------------------------------------------------------";
+	string bar = "--------------------------------------------------------------";
 	string tableHeader = "Assigned   Description                   Due Date   Status";
-	cout << "---------------------Late assignments-----------------------" << endl 
+	cout << endl << "--------------------- Late assignments -----------------------" << endl
 		<< tableHeader << endl << bar << endl;
 	//Peruse through the completed list only
 	iter = completedList.begin(); 
@@ -266,15 +264,16 @@ void Menu::saveLists() {
 	//Reading out to old file
 	iter = assignedList.begin(); 
 	while (iter != assignedList.end()) {
-		fout << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()] <<endl;
+		fout << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()] << endl;
 		++iter; 
 	}
 
 	iter = completedList.begin(); 
 	while (iter != completedList.end()) {
-		fout << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()] << endl;
+		fout << endl << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()];
 		++iter; 
 	}
+
 
 	return; 
 

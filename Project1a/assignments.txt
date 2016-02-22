@@ -1,6 +1,7 @@
 03-10-2015, stacks, 03-01-2015, assigned
 03-11-2015, integers, 03-04-2015, assigned
 06-10-2015, linear algebra, 06-07-2015, assigned
+
 02-11-2015, linked lists, 02-02-2015, late
 02-11-2015, UML diagrams, 02-03-2015, late
 04-12-2015, doubles, 04-01-2015, completed
