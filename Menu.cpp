@@ -92,7 +92,7 @@ bool Menu::addAssignment() {
 	} while (dueDate < assignedDate); 
 	
 	//Prompt user for assignment description
-//	cin.ignore(1);
+	cin.ignore(1);
 	cout << endl << "Enter a brief description of the assignment: ";
 	getline(cin, desc);
 
@@ -176,7 +176,7 @@ bool Menu::editDueDate() {
 				cout << "Error: The due date cannot be before the assigned date." << endl
 					<< "Please check the date and try again." << endl;
 			}
-			//Re-prompt if condition fails
+		//Re-prompt if condition fails
 		} while (inDate < iter->getAssignDate());
 	}
 
@@ -187,40 +187,61 @@ bool Menu::editDueDate() {
 }
 
 bool Menu::editDescription() {
-	//Prompt user for a date
-	cout << "Enter the assigned date of the assignment to edit. (MM/DD/YYYY)" << endl;
+	//Variables
 	Date inDate;
+	string newDesc;
+	char response;
+	bool isInvalid = false;
+	string tableHeader = " Assigned  Description                     Due Date   Status";
+	string bar = "--------------------------------------------------------------";
+
+	cout << endl << "** Edit Assignment Description **" << endl;
+
+	//Prompt user for assigned date
+	cout << endl << "When was it assigned? (MM/DD/YYYY): ";
 	cin >> inDate;
 
-	//If the date is invaild, exit function
+	//Search for the date in the lists
 	if (findAssignment(inDate) == false) {
-		cout << "Assignment not found" << endl; 
+		cout << "Error: Assignment not found." << endl;
 		return false;
-		}
-
-	//Display found assignment
-	cout << "Here is the assignment you chose:" << endl;
-	cout << iter->getAssignDate() << ", " << iter->getDescription() << ", " << iter->getDueDate() << ", " << statusTypes[iter->getStatus()] << endl << endl;
-
-	//Confirm with user to edit assignment
-	cout << "\nEdit this assignment? Y/N: ";
-	cin.ignore(1);
-	string ch;
-	cin >> ch;
-	if (ch == "n" || ch == "N") {
-		return false; //Exit if user does not want to edit
 	}
 
-	//Prompt user for new description
-	cin.ignore(1);
-	string newDesc;
-	cout << "Enter a description: ";
-	getline(cin,newDesc);
+	//Output assignment to user
+	cout << endl << "--------------------- Assignment Details ---------------------" << endl;
+	cout << tableHeader << endl << bar << endl;
+	cout << iter->getAssignDate() << "|";
+	cout << setw(30) << left << iter->getDescription().substr(0, 30) << "|";
+	cout << iter->getDueDate() << "|";
+	cout << statusTypes[iter->getStatus()] << endl;
+	cout << bar << endl;
 
-	iter->setDescription(newDesc); // Set new description
+	//Prompt to confirm editing
+	do {
+		cout << endl << "Edit this assignment? Y/N: ";
+		cin >> response;
+		//Check for valid response
+		isInvalid = !(response == 'n' || response == 'N' || response == 'y' || response == 'Y');
+		if (isInvalid)
+			cout << "Invalid option. Please enter Y or N." << endl;
 
-	//Inform user of the update
-	cout << "\nUpdate complete." << endl << endl;
+	// Re-prompt if invalid response
+	} while (isInvalid);
+
+	if (response == 'n' || response == 'N') {
+		cout << endl << "** Edit cancelled **" << endl;
+		return false;
+	}
+	else {
+		//Prompt user for new description
+		cin.ignore(1);
+		cout << endl << "Enter the new description: ";
+		getline(cin, newDesc);
+	}
+
+	//Update the assignment
+	iter->setDescription(newDesc);
+	cout << endl << "** Assignment updated **" << endl;
 	return true;
 }
 
