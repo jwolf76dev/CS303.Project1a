@@ -246,41 +246,81 @@ bool Menu::editDescription() {
 }
 
 bool Menu::completeAssignment() {
-	//Get the assignment date from the user
-	cout << "Enter the assigned date of the assignment to complete. (MM/DD/YYYY)" << endl;
+	//Variables
 	Date inDate;
+	char response;
+	bool isInvalid = false;
+	Date doneDate;
+	string tableHeader = " Assigned  Description                     Due Date   Status";
+	string bar = "--------------------------------------------------------------";
+
+	cout << endl << "** Complete Assignment **" << endl;
+
+	//Prompt user for assigned date
+	cout << endl << "When was it assigned? (MM/DD/YYYY): ";
 	cin >> inDate;
 
-	//Search for the assignment in the assigned list only
-	iter = assignedList.begin();
+	//Search for the date in the assigned list only
 	iter = assignedList.find(inDate);
 
-	iter = assignedList.find(inDate); //Search the list for the specified date, .find() will return the end() if not found. 
-	if (iter == assignedList.end()) { //If date was not found in Assigned list
-		cout << "Assignment Not Found. Please check assignments by using Display Assignments. " << endl; 
-		return false; //Return assignment not found
+	if (iter == assignedList.end()) {
+		cout << "Error: Assignment not found." << endl;
+		return false;
 	}
 
-	cout << "Please enter the date you completed the assignment" << endl; 
-	Date completedDate; 
+	//Output assignment to user
+	cout << endl << "--------------------- Assignment Details ---------------------" << endl;
+	cout << tableHeader << endl << bar << endl;
+	cout << iter->getAssignDate() << "|";
+	cout << setw(30) << left << iter->getDescription().substr(0, 30) << "|";
+	cout << iter->getDueDate() << "|";
+	cout << statusTypes[iter->getStatus()] << endl;
+	cout << bar << endl;
+
+	//Prompt to confirm editing
 	do {
-		cin >> completedDate;
-		//Then check if the completed date is greater than the assigned date, and if not, then it's invalid
-		if (completedDate < inDate) {
-			cout << "This completed date is before the assignment date. Please try again. " << endl; 
-		}
-	} while (completedDate < inDate); 
+		cout << endl << "Complete this assignment? Y/N: ";
+		cin >> response;
 
-	//If it's valid, if the completed date is before or equal to the due date, then mark it as completed
-	if (completedDate < iter->getDueDate()) {
-		iter->setStatus(completed);
+		//Check for valid response
+		isInvalid = !(response == 'n' || response == 'N' || response == 'y' || response == 'Y');
+		if (isInvalid)
+			cout << "Invalid option. Please enter Y or N." << endl;
+
+		// Re-prompt if invalid response
+	} while (isInvalid);
+
+	if (response == 'n' || response == 'N') {
+		cout << endl << "** Edit cancelled **" << endl;
+		return false;
 	}
-	//If it's past the due date, mark it as late.
-	else
-		iter->setStatus(late); 
+	else {
+		do {
+			cout << endl << "Please enter the date you completed the assignment: ";
+			cin >> doneDate;
 
-	completedList.insert(*iter);
-	assignedList.remove(*iter);  
+			//Verify completed date >= assigned date
+			if (doneDate < inDate) {
+				cout << "Error: The completed date is before the assigned date." << endl
+					<< "Please check the date and try again. " << endl;
+			}
+			// Re-prompt if invalid response
+		} while (doneDate < inDate);
+
+		//Update the assignment
+		if (doneDate <= iter->getDueDate()) {
+			iter->setStatus(completed);
+		}
+		else
+			iter->setStatus(late);
+
+		//Move completed assignment to completed list
+		completedList.insert(*iter);
+		assignedList.remove(*iter);
+
+		cout << endl << "** Assignment updated **" << endl;
+		return true;
+	}
 }
 
 void Menu::listLateAssignments() {
