@@ -123,6 +123,7 @@ bool Menu::editDueDate() {
 	//Variables
 	Date inDate;
 	char ch;
+	bool invalid;
 	string tableHeader = " Assigned  Description                     Due Date   Status";
 	string bar = "--------------------------------------------------------------";
 	
@@ -145,20 +146,20 @@ bool Menu::editDueDate() {
 	cout << setw(30) << left << iter->getDescription().substr(0, 30) << "|";
 	cout << iter->getDueDate() << "|";
 	cout << statusTypes[iter->getStatus()] << endl;
-	cout << bar;
+	cout << bar << endl;
 
 	//Prompt to confirm editing
 	do {
 		cout << endl << "Edit this assignment? Y/N: ";
 		cin >> ch;
-		cin.ignore(1);
-
 		//Check for valid response
-		if (ch != 'n' || 'N' || 'y' || 'Y') {
-			cout << "Invalid entry. Please try again." << endl;
-		}
+		invalid = true;
+		invalid = !(ch == 'n' || ch == 'N' || ch == 'y' || ch == 'Y');
+		if (invalid == true)
+			cout << "Invalid option. Please enter Y or N.";
+
 	// Re-prompt if invalid response
-	} while (ch != 'n' || 'N' || 'y' || 'Y');
+	} while (invalid == true);
 
 	if (ch == 'n' || ch == 'N') {
 		return false;
