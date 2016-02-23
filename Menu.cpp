@@ -11,8 +11,10 @@ using namespace std;
 //Language, style, and grammar of prompts need to look consistent. 
 //Most comments should be the line above, and need to be similar. 
 
-string statusTypes[] = { "assigned","completed","late" }; //Converts enum
+//Convert enum to text
+string statusTypes[] = { "assigned", "completed", "late" };
 
+//Load and populate assignment lists from assignments.txt
 void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
 	Assignment tempAssign(due, desc, assign, status);
 
@@ -20,6 +22,8 @@ void Menu::addToList(Date due, string desc, Date assign, assignStatus status) {
 		assignedList.insert(tempAssign);
 	else
 		completedList.insert(tempAssign);
+	
+	return;
 }
 
 void Menu::displayAssignments() {
@@ -49,6 +53,7 @@ void Menu::displayAssignments() {
 		++iter;
 	}
 	cout << endl;
+	return;
 }
 
 bool Menu::addAssignment() {
@@ -326,15 +331,15 @@ bool Menu::completeAssignment() {
 void Menu::listLateAssignments() {
 	string bar = "--------------------------------------------------------------";
 	string tableHeader = " Assigned  Description                     Due Date   Status";
+	int counter = 0;
+
 	cout << endl << "--------------------- Late assignments -----------------------" << endl
-		<< tableHeader << endl << bar << endl;
-	//Peruse through the completed list only
+		 << tableHeader << endl << bar << endl;
+	
+	//Search in the completed list only
 	iter = completedList.begin(); 
 
-	//Counter for number of late assignments
-	int counter = 0; 
-
-	//Search the list looking for late assignments only
+	//Search the list for late assignments only
 	while (iter != completedList.end()) {
 		if (iter->getStatus() == late) {
 			//Display the assignment and increment counter
@@ -350,45 +355,78 @@ void Menu::listLateAssignments() {
 	//Output the total number of late assignments
 	cout << endl << "Total late assignments: " << counter << endl;
 	cout << bar << endl;
-
+	return;
 }
 
 void Menu::saveLists() {
+	char response;
+	bool isInvalid = false;
+
 	//Overload the filestream 
 	fstream fout;
 	fout.open("assignments.txt"); 
 
-	//Let user know that this program is replacing the old file. 
-	cout << "This is replacing the old assignments.txt file" << endl; 
+	//Prompt user to confirm overwriting the previous assignments.txt file
+	cout << endl << "Saving will overwrite and update the assignments list." << endl;
 
-	//Reading out to old file
-	iter = assignedList.begin(); 
-	while (iter != assignedList.end()) {
-		fout << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()] << endl;
-		++iter; 
+	//Prompt to confirm editing
+	do {
+		cout << endl << "Save changes? Y/N: ";
+		cin >> response;
+		//Check for valid response
+		isInvalid = !(response == 'n' || response == 'N' || response == 'y' || response == 'Y');
+		if (isInvalid)
+			cout << "Invalid option. Please enter Y or N." << endl;
+
+	// Re-prompt if invalid response
+	} while (isInvalid);
+
+	if (response == 'n' || response == 'N') {
+		cout << endl << "** Save cancelled **" << endl;
+		return;
+	}
+	else {
+		//Write assignment lists to assignments.txt
+		iter = assignedList.begin();
+		while (iter != assignedList.end()) {
+			fout << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()] << endl;
+			++iter;
+		}
+
+		iter = completedList.begin();
+		while (iter != completedList.end()) {
+			fout << endl << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()];
+			++iter;
+		}
 	}
 
-	iter = completedList.begin(); 
-	while (iter != completedList.end()) {
-		fout << endl << iter->getDueDate() << ", " << iter->getDescription() << ", " << iter->getAssignDate() << ", " << statusTypes[iter->getStatus()];
-		++iter; 
-	}
-
-
+	cout << endl << "** Assignments saved **" << endl;
 	return; 
-
 }
 
 void Menu::exitProgram() {
-	// Tell the user that any unsaved work will be lost. 
-	cout << "Any unsaved data will be lost, are you sure(Y/N)?:";
-	char quit;
-	cin >> quit;
-	if (quit == 'Y' || quit == 'y' || quit == '1') {
-		exit(1);
+	char response;
+	bool isInvalid = false;
+	
+	cout << endl << "Warning: Any unsaved data will be lost." << endl;
+	//Prompt to confirm editing
+	do {
+		cout << endl << "Exit program? Y/N: ";
+		cin >> response;
+		//Check for valid response
+		isInvalid = !(response == 'n' || response == 'N' || response == 'y' || response == 'Y');
+		if (isInvalid)
+			cout << "Invalid option. Please enter Y or N." << endl;
+
+		// Re-prompt if invalid response
+	} while (isInvalid);
+
+	if (response == 'n' || response == 'N') {
+		cout << endl << "** Exit cancelled **" << endl;
+		return;
 	}
 	else
-		cout << endl << "Invalid entry." << endl << endl;
+		exit(1);
 }
 
 //Search both lists for a specified date
@@ -410,5 +448,6 @@ bool Menu::findAssignment(Date inDate) {
 			return false; 
 		}
 	}
-	return true; //Return assignment found
+	//Return assignment found
+	return true;
 }
