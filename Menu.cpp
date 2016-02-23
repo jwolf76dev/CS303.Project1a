@@ -48,10 +48,11 @@ void Menu::displayAssignments() {
 		cout << statusTypes[iter->getStatus()] << endl;
 		++iter;
 	}
+	cout << endl;
 }
 
 bool Menu::addAssignment() {
-	//Input variables
+	//Variables
 	Date assignedDate, dueDate;
 	string desc;
 	int statChoice;
@@ -91,13 +92,13 @@ bool Menu::addAssignment() {
 	} while (dueDate < assignedDate); 
 	
 	//Prompt user for assignment description
-	cin.ignore(1);
-	cout << endl << "Describe the assignment: ";
+//	cin.ignore(1);
+	cout << endl << "Enter a brief description of the assignment: ";
 	getline(cin, desc);
 
 	//Prompt user for assignment status
 	do {
-		cout << endl << "What is the assignment status?" << endl;
+		cout << endl << "What is the assignment's status?" << endl;
 		cout << "1 - Assigned" << endl
 			 << "2 - Completed" << endl
 			 << "3 - Late" << endl
@@ -105,25 +106,25 @@ bool Menu::addAssignment() {
 		cin >> statChoice;
 
 		switch (statChoice) {
-		case 1: {status = assigned; break; }
-		case 2: {status = completed; break; }
-		case 3: {status = late; break; }
-		default: {status = assigned;  cout << "Invalid option. Please select 1, 2, or 3." << endl;} // I don't think this is right...
+		case 1: { status = assigned; break; }
+		case 2: { status = completed; break; }
+		case 3: { status = late; break; }
+		default: { cout << "Invalid option. Please select 1, 2, or 3." << endl; break; }
 		}
 	//Re-prompt if condition fails
 	} while (statChoice > 3 || statChoice < 1);
 		
 	//Add the object
 	addToList(dueDate, desc, assignedDate, status);
-	cout << endl << "** Assignment added. **" << endl;
+	cout << endl << "** Assignment added **" << endl;
 	return true;
 }
 
 bool Menu::editDueDate() {
 	//Variables
 	Date inDate;
-	char ch;
-	bool invalid;
+	char response;
+	bool isInvalid = false;
 	string tableHeader = " Assigned  Description                     Due Date   Status";
 	string bar = "--------------------------------------------------------------";
 	
@@ -151,17 +152,17 @@ bool Menu::editDueDate() {
 	//Prompt to confirm editing
 	do {
 		cout << endl << "Edit this assignment? Y/N: ";
-		cin >> ch;
+		cin >> response;
 		//Check for valid response
-		invalid = true;
-		invalid = !(ch == 'n' || ch == 'N' || ch == 'y' || ch == 'Y');
-		if (invalid == true)
-			cout << "Invalid option. Please enter Y or N.";
+		isInvalid = !(response == 'n' || response == 'N' || response == 'y' || response == 'Y');
+		if (isInvalid)
+			cout << "Invalid option. Please enter Y or N." << endl;
 
 	// Re-prompt if invalid response
-	} while (invalid == true);
+	} while (isInvalid);
 
-	if (ch == 'n' || ch == 'N') {
+	if (response == 'n' || response == 'N') {
+		cout << endl << "** Edit cancelled **" << endl;
 		return false;
 	}
 	else {
@@ -181,7 +182,7 @@ bool Menu::editDueDate() {
 
 	//Update the assignment
 	iter->setDueDate(inDate);
-	cout << endl << "** Assignment updated. **" << endl;
+	cout << endl << "** Assignment updated **" << endl;
 	return true;
 }
 
