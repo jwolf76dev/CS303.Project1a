@@ -1,14 +1,15 @@
 03-10-2015, stacks, 03-01-2015, assigned
+05-16-2017, research, 04-03-2015, late
+09-08-2015, queues, 09-07-2015, completed
 03-11-2015, integers, 03-04-2015, assigned
-06-10-2015, linear algebra, 06-07-2015, assigned
-
 02-11-2015, linked lists, 02-02-2015, late
-02-11-2015, UML diagrams, 02-03-2015, late
 03-10-2015, queueueues, 03-02-2015, late
+03-03-2015, homework 3241, 03-03-2015, completed
+10-10-2016, The quick brown fox jumps over the lazy dog, 10-05-2016, assigned
 04-12-2015, doubles, 04-01-2015, completed
 04-08-2015, interface design, 04-02-2015, completed
-05-17-2017, research, 04-03-2015, late
+02-11-2015, UML diagrams, 02-03-2015, late
 07-14-2015, circular lists, 06-10-2015, completed
-09-08-2015, queues, 09-07-2015, completed
 12-12-2015, take home quiz, 12-01-2015, late
 05-31-2016, new assignment 1, 02-05-2016, completed
+06-10-2015, linear algebra, 06-07-2015, assigned

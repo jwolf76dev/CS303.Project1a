@@ -2,12 +2,11 @@
 #define STRINGTOKENIZER_H
 #include <string>
 
-//Code written by Kuhail
-//int getNumber(int low, int high, std::string message);
+// class String_Tokenizer written by M. Kuhail
+// e-mail: kuhailm@umkc.edu
 
-/** The string_tokenizer class splits a string into a sequence of subtrings,
-called tokens, separated by delimeters.
-*/
+/* The string_tokenizer class splits a string into a sequence of subtrings,
+called tokens, separated by delimeters. */
 class String_Tokenizer
 {
 public:

@@ -2,7 +2,10 @@
 #define ORDERED_LIST_H_
 #include "list.h"
 
-//Code written by Kuhail
+// class Ordered_List written by M. Kuhail
+// e-mail: kuhailm@umkc.edu
+// updated by students for project
+
 /* The ordered list maintains a list of objects ordered by their less-than operator*/
 template<typename Item_Type>
 class Ordered_List {

@@ -12,29 +12,29 @@ private:
 	string description;
 	assignStatus status;
 public:
-	//Constructors
+	// Constructors
 	Assignment() { ; }
 	Assignment(Date newDue, string newDisc, Date newAssign, assignStatus newStatus) : dueDate(newDue), assignDate(newAssign), description(newDisc), status(newStatus) {}
 	
-	//Copy Constructor
+	// Copy Constructor
 	Assignment(const Assignment& a) : dueDate(a.dueDate), assignDate(a.assignDate), description(a.description), status(a.status) {}
 
-	//Destructor
+	// Destructor
 	~Assignment() { ; }
 
-	//Setters
+	// Setters
 	void setDueDate(Date newDate) { dueDate = newDate; }
 	void setAssignDate(Date newDate) { assignDate = newDate; }
 	void setDescription(string newDescription) { description = newDescription; }
 	void setStatus(assignStatus newStatus) { status = newStatus; }
 
-	//Getters
+	// Getters
 	Date getDueDate() const { return dueDate;  }
 	Date getAssignDate() const { return assignDate; }
 	string getDescription() const { return description; }
 	assignStatus getStatus() const { return status; }
 
-	//Overloaded operators
+	// Overloaded operators
 	bool operator==(const Assignment rhs) const { return getAssignDate() == rhs.getAssignDate(); }
 };
 

@@ -1,5 +1,8 @@
 #include <cstddef>
 
+// template class list written by M. Kuhail
+// e-mail: kuhailm@umkc.edu
+
 template<typename Item_Type>
 class list {
 private:

@@ -12,27 +12,27 @@ private:
 	Ordered_List<Assignment>::iter iter = assignedList.begin();
 
 public:
-	//Constructors
+	// Constructors
 	Menu() {}
 	Menu(Ordered_List<Assignment>& aList, Ordered_List<Assignment>& cList) : assignedList(aList), completedList(cList) {}
 
-	//Destructor
+	// Destructor
 	~Menu() {}
 
-	//Modifiers
+	// Modifiers
 	bool addAssignment();
 	bool findAssignment(Date inDate);
 	bool editDueDate();
 	bool editDescription();
 	bool completeAssignment();
 
-	//Other menu options
+	// Other menu options
 	void displayAssignments();
 	void listLateAssignments();
 	void saveLists();
 	void exitProgram();
 
-	//Other
+	// Other function(s)
 	void addToList(Date due, string desc, Date assign, assignStatus status);
 }; 
 #endif

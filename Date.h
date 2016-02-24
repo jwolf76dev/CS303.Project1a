@@ -14,9 +14,8 @@
 #include <iostream>
 using namespace std;
 
-/* class Date wirtten by Mohammad Kuhail
-e-mail: kuhailm@Umkc.edu
-*/
+// class Date written by M. Kuhail
+// e-mail: kuhailm@umkc.edu
 
 const int DAYS[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; //number of days in the 12 months
 
@@ -42,7 +41,7 @@ public:
 		this->format = format;
 	}
 
-	/* return a string that represents the date*/
+	/* return a string that represents the date */
 	string toString() const {
 		switch (format){
 		case DateFormat::US:
@@ -52,7 +51,7 @@ public:
 		}
 	}
 
-	/* parse a date according to a given format*/
+	/* parse a date according to a given format */
 	static Date parseDate(const string& date, DateFormat format){
 
 		String_Tokenizer st(date, "-/,.*");
