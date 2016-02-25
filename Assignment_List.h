@@ -7,13 +7,15 @@
 #include <iostream>
 #include <fstream>
 
+// List class to store assignments
 class Assignment_List {
 private:
 	Ordered_List<Assignment> assignedList;
 	Ordered_List<Assignment> completedList;
 	Ordered_List<Assignment>::iter listIter = assignedList.begin();
 public:
-	Assignment_List() { load_data(); }  // Load Data Here
+	// Constructor loads data from input file on initialization
+	Assignment_List() { load_data(); }
 	~Assignment_List() {}
 
 	// Used for list population
@@ -35,9 +37,6 @@ public:
 	// Program functions
 	void saveLists();
 	void exitProgram();
-
-
 };
-
 
 #endif

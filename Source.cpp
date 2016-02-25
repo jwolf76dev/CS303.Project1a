@@ -5,12 +5,13 @@ with support code from Prof. M. Kuhail (kuhailm@umkc.edu)
 **************************************************************/
 
 #include "UI.h"
+using namespace std;
 
 void main() {
 	// Create the User Interface
 	UI user_interface;
 
-	// Load the UI menu
+	// Load the UI menu and run indefinitely
 	for (;;) {
 		user_interface.main_menu();
 	}

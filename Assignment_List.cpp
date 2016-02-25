@@ -1,6 +1,7 @@
-
 #include "Assignment_List.h"
 using namespace std;
+
+// enumerated status types
 string statusTypes[] = { "assigned", "completed", "late" };
 
 // Function trim() code from M. Kuhail
@@ -14,10 +15,11 @@ string Assignment_List::trim(const string& the_string) {
 	return the_string.substr(p, q - p + 1);
 }
 
-
+// Load assignment lists from file
+// Input file hard-coded
+// Lists are sorted as assignments are added
 void Assignment_List::load_data() {
-	// Load assignment lists from file
-
+	
 	// Variables from file input
 	string line, dueDate, desc, assignDate, status;
 	ifstream in("assignments.txt");
@@ -61,6 +63,7 @@ void Assignment_List::load_data() {
 
 }
 
+// Add the assignments to the appropriate lists in sorted order
 void Assignment_List::addToList(Date due, string desc, Date assign, assignStatus status) {
 
 	Assignment tempAssign(due, desc, assign, status);
@@ -72,7 +75,7 @@ void Assignment_List::addToList(Date due, string desc, Date assign, assignStatus
 	return;
 }
 
-// Display both lists of assignments
+// Display the contents and details of both lists of assignments
 void Assignment_List::displayAssignments() {
 	// Variables
 	string bar = "--------------------------------------------------------------";
@@ -109,8 +112,10 @@ void Assignment_List::displayAssignments() {
 	cout << endl;
 	return;
 }
-// Add a new assignment to a list
+// Add a new assignment to a list from the user interface
+// Adds in properly sorted order by assigned date
 bool Assignment_List::addAssignment() {
+
 	// Variables
 	Date assignedDate, dueDate;
 	string desc;
@@ -147,7 +152,7 @@ bool Assignment_List::addAssignment() {
 			cout << "Error: The due date cannot be before the assigned date." << endl
 				<< "Please check the date and try again." << endl;
 		}
-		// Re-prompt if condition fails
+	// Re-prompt if condition fails
 	} while (dueDate < assignedDate);
 
 	// Prompt user for assignment description
@@ -170,7 +175,7 @@ bool Assignment_List::addAssignment() {
 		case 3: { status = late; break; }
 		default: { cout << "Invalid option. Please select 1, 2, or 3." << endl; break; }
 		}
-		// Re-prompt if condition fails
+	// Re-prompt if condition fails
 	} while (statChoice > 3 || statChoice < 1);
 
 	// Add the object to the appropriate list
@@ -180,6 +185,7 @@ bool Assignment_List::addAssignment() {
 }
 
 // Edit the due date of an existing assignment
+// Edits assignments from either list
 bool Assignment_List::editDueDate() {
 	// Variables
 	Date inDate;
@@ -247,7 +253,9 @@ bool Assignment_List::editDueDate() {
 	return true;
 }
 
+// Edit an assignment's description
 bool Assignment_List::editDescription() {
+
 	// Variables
 	Date inDate;
 	string newDesc;
@@ -286,7 +294,7 @@ bool Assignment_List::editDescription() {
 		if (isInvalid)
 			cout << "Invalid option. Please enter Y or N." << endl;
 
-		// Re-prompt if invalid response
+	// Re-prompt if invalid response
 	} while (isInvalid);
 
 	if (response == 'n' || response == 'N') {
@@ -306,7 +314,11 @@ bool Assignment_List::editDescription() {
 	return true;
 }
 
+// Mark an assignment with "assigned" status as complete
+// Will mark assignment either "Complete" or "Late" based on completion date and due date
+// Removes completed assignment from assigned list to completed list
 bool Assignment_List::completeAssignment() {
+
 	// Variables
 	Date inDate;
 	char response;
@@ -348,7 +360,7 @@ bool Assignment_List::completeAssignment() {
 		if (isInvalid)
 			cout << "Invalid option. Please enter Y or N." << endl;
 
-		// Re-prompt if invalid response
+	// Re-prompt if invalid response
 	} while (isInvalid);
 
 	if (response == 'n' || response == 'N') {
@@ -365,7 +377,7 @@ bool Assignment_List::completeAssignment() {
 				cout << "Error: The completed date is before the assigned date." << endl
 					<< "Please check the date and try again. " << endl;
 			}
-			// Re-prompt if invalid response
+		// Re-prompt if invalid response
 		} while (doneDate < inDate);
 
 		// Update the assignment
@@ -384,6 +396,7 @@ bool Assignment_List::completeAssignment() {
 	}
 }
 
+// Displays a list of assignments with status "Late"
 void Assignment_List::listLateAssignments() {
 	string bar = "--------------------------------------------------------------";
 	string tableHeader = " Assigned  Description                     Due Date   Status";
@@ -414,6 +427,8 @@ void Assignment_List::listLateAssignments() {
 	return;
 }
 
+// Saves assignment lists to hard-coded file (same as input file)
+// Overwrites existing file
 void Assignment_List::saveLists() {
 	char response;
 	bool isInvalid = false;
@@ -434,7 +449,7 @@ void Assignment_List::saveLists() {
 		if (isInvalid)
 			cout << "Invalid option. Please enter Y or N." << endl;
 
-		// Re-prompt if invalid response
+	// Re-prompt if invalid response
 	} while (isInvalid);
 
 	if (response == 'n' || response == 'N') {
@@ -460,6 +475,7 @@ void Assignment_List::saveLists() {
 	return;
 }
 
+// Exits the program after prompring user to save any changes
 void Assignment_List::exitProgram() {
 	char response;
 	bool isInvalid = false;

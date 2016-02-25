@@ -3,8 +3,10 @@
 
 #include "Date.h"
 
+// Enumerated status types
 enum assignStatus { assigned, completed, late };
 
+// Assignment class to store assignment details
 class Assignment {
 private:
 	Date dueDate;

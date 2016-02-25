@@ -1,4 +1,7 @@
+#pragma once
+
 #include "UI.h"
+using namespace std;
 
 void UI::main_menu()
 {
@@ -28,4 +31,3 @@ void UI::main_menu()
 	default: { cout << "Invalid option. Please select from 1 to 8." << endl << endl; break; }
 	}
 }
-
