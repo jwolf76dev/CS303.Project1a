@@ -1,14 +1,15 @@
-#pragma once
+#ifndef MENU_H
+#define MENU_H
 
-#include "Ordered_List.h"
 #include "Assignment.h"
 #include "Date.h"
+#include "Ordered_List.h"
 
 class Menu {
 private:
 	Ordered_List<Assignment> assignedList;
 	Ordered_List<Assignment> completedList;
-	Ordered_List<Assignment>::iterator iter = assignedList.begin();
+	Ordered_List<Assignment>::iter iter = assignedList.begin();
 
 public:
 	// Constructors
@@ -18,19 +19,20 @@ public:
 	// Destructor
 	~Menu() {}
 
-	// List modifiers
-	void addToList(Date due, string desc, Date assign, assignStatus status);
+	// Modifiers
 	bool addAssignment();
 	bool findAssignment(Date inDate);
 	bool editDueDate();
 	bool editDescription();
 	bool completeAssignment();
 
-	// List accessors
+	// Other menu options
 	void displayAssignments();
 	void listLateAssignments();
-
-	// Program functions
 	void saveLists();
 	void exitProgram();
-};
+
+	// Other function(s)
+	void addToList(Date due, string desc, Date assign, assignStatus status);
+}; 
+#endif
