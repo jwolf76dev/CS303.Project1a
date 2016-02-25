@@ -1,6 +1,7 @@
 #ifndef D_LINKED_LIST_CONST_ITERATOR_H_
 #define D_LINKED_LIST_CONST_ITERATOR_H_
 
+template<typename Item_Type>
 class const_iterator {
 	// Give the parent class access to this class.
 	friend class list<Item_Type>;

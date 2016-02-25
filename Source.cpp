@@ -11,7 +11,8 @@ void main() {
 	UI user_interface;
 
 	// Load the UI menu
-	UI.run_menu();
-
+	for (;;) {
+		user_interface.main_menu();
+	}
 	return;
 }

@@ -1,6 +1,7 @@
 #ifndef ORDERED_LIST_H_
 #define ORDERED_LIST_H_
-#include "list.h"
+#include <list>
+#include "Date.h"
 
 // class Ordered_List written by M. Kuhail
 // e-mail: kuhailm@umkc.edu

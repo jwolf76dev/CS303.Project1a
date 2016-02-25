@@ -1,6 +1,8 @@
 #ifndef D_LINKED_LIST_ITERATOR_H_
 #define D_LINKED_LIST_ITERATOR_H_
 
+
+template<typename Item_Type>
 class iterator {
 	// Give the parent class access to this class.
 	friend class list<Item_Type>;
