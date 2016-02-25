@@ -12,18 +12,6 @@ Build notes: If the assignments are not loading during the first run of the prog
 All C++ code was written, compiled, and tested in Visual Studio 2015
 
 
-TODO: Finalize BigO calculations of MAJOR functions
 
-TODO: Finalize Group Report
-
-
-Done: 
-  Code commenting
-  Formal UML
-  Readme
-  Assignment list class programming
-  Menu programming
-  Sudo code
-  Assignment class
-  .gitignore updated to allow only .c .h .cpp and .hpp
+.gitignore updated to allow only .c .h .cpp and .hpp
 
